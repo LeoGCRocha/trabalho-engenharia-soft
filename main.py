@@ -192,9 +192,20 @@ def carrinho_de_compras():
   notLogin()
   lista = session['carrinho_de_compras']
   prodList = []
+  total = 0
   for idAtual in lista:
-    prodList.append(c.getProduto(idAtual))
-  return render_template("carrinho_de_compras.html", produtos = prodList)
+    prod = c.getProduto(idAtual)
+    prodList.append(prod)
+    total += prod.getPreco()
+  return render_template("carrinho_de_compras.html", produtos = prodList, tot = total)
+@app.route("/remover_carrinho/<id>")
+def remover_carrinho(id):
+  notLogin()
+  lista = session['carrinho_de_compras']
+  if id in lista:
+    lista.remove(id)
+  session['carrinho_de_compras'] = lista
+  return redirect(url_for('carrinho_de_compras'))
 # IS ADMIN ?!
 def isAdmin():
   if 'login' not in session:
