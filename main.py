@@ -153,6 +153,7 @@ def registrar_produto():
 def deletar_produto(id):  
   admin = isAdmin()
   if admin:
+    c.deletar_produto(id)
     return redirect(url_for('admin_produto'))
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
@@ -164,6 +165,17 @@ def editar_produto(id):
     return render_template("editar_produto.html", produto = prod)
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
+@app.route("/editar_produto_metodo", methods = ["POST"])
+def editar_produto_metodo():
+  if request.method == "POST":
+    prodId = request.form['id']
+    nome  = request.form['nome']
+    descricao = request.form['descricao']
+    preco = request.form['preco']
+    linkImagem = request.form['imagem']
+    produto = Produto(prodId, nome,descricao ,preco, linkImagem)
+    c.editar_produto(produto)
+  return redirect(url_for('admin_produto'))
 # IS ADMIN ?!
 def isAdmin():
   if 'login' not in session:

@@ -63,3 +63,7 @@ class Conexao:
 			p = Produto(r[0], r[1],r[2],r[3], r[4])
 			lista.append(p)
 		return lista[0]
+	def editar_produto(self, produto):
+		sql = "UPDATE PRODUTO SET \"nome\" = %s, \"link_imagem\"=%s, \"descricao\"=%s, \"preco\"=%s WHERE id = %s"
+		self.__cur.execute(sql,(produto.getNome(), produto.getLinkImagem(), produto.getDescricao(), produto.getPreco(), produto.getId()))
+		self.__con.commit()
