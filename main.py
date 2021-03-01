@@ -7,11 +7,11 @@ from produto import Produto
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
 c = Conexao()
-# SOLUÇÃO PARA ERRO DE ROTAS
 import sys
-if sys.version[0] == '2':
-    reload(sys)
-    sys.setdefaultencoding("utf-8")
+# sys.setdefaultencoding() does not exist, here!
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
+# SOLUÇÃO PARA ERRO DE ROTAS
 # ROTAS
 @app.route('/')
 def main_page():
@@ -27,7 +27,7 @@ def main_page():
 # DESENVOLVER PAGINA INICIAL PARA ADMIN
 @app.route('/logar', methods=['POST'])
 def logar():
-  senha = request.form['senha'] 
+  senha = request.form.get('senha')
   email = request.form['email']
   if email == "admin@admin":
     if senha == "admin":
@@ -43,6 +43,7 @@ def logar():
         if senha == user.getSenha():
           session['login'] = user.getId()
           session['email'] = user.getEmail()
+          session['carrinho_de_compras'] = []
   return redirect(url_for('main_page'))
 # ADMIN PAGE
 @app.route("/admin")
@@ -176,6 +177,25 @@ def editar_produto_metodo():
     produto = Produto(prodId, nome,descricao ,preco, linkImagem)
     c.editar_produto(produto)
   return redirect(url_for('admin_produto'))
+# ADICONAR AO CARRINHO DE COMPRAS
+@app.route("/adicionar_carrinho/<id>")
+def adicionar_carrinho(id):
+  notLogin()
+  prod = c.getProduto(id)
+  inProds = False
+  lista = session['carrinho_de_compras']
+  for prodX in lista:
+    if prodX.getId() == prod.getId():
+      inProds = True
+      break
+  if not inProds:
+    lista.append(prod)
+    session['carrinho_de_compras'] = lista
+  return redirect(url_for('main_page')) # USUARIO JA ESTA LOGADO E DEVE SER REDIRECIONADO
+@app.route("/carrinho_de_compras")
+def carrinho_de_compras():
+  notLogin()
+  return render_template("carrinho_de_compras.html", produtos = session['carrinho_de_compras'])
 # IS ADMIN ?!
 def isAdmin():
   if 'login' not in session:
