@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/index.css') }}">
+<form id="login-form" method="post" action="logar" class="form-signin">
+    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Realize login para continuar</h1>
+    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+    <br/>
+    <input type="password" name="senha" id="inputPassword" class="form-control" placeholder="Senha" required>
+    <br/>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+    <a class="btn btn-lg btn-primary btn-block" href="{{ url_for('registro') }}">Registro</a>
+</form>
+{% endblock %}

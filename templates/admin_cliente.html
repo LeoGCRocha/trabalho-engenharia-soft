@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/admin.css') }}">
+<div class="container" id="container-cruds">
+    <div class="container" id="container-cliente">
+        <h1>CRUD <span class="badge bg-danger">Clientes</span></h1>
+        <div class="row col-md-6 col-md-offset-2 custyle">
+    </div>
+    <table id="tabela" class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th class="text-center">Ação</th>
+        </tr>
+    </thead>
+    {% for cliente in clientes %}
+    <tr>
+        <td>{{ cliente.getId() }}</td>
+        <td>{{ cliente.getNome() }}</td>
+        <td>{{ cliente.getEmail() }}</td>
+        <td>{{ cliente.getCpf() }}</td>
+        <td class="text-center">
+            <a class='btn btn-info btn-xs' href="editar_cliente/{{ cliente.getId() }}"><span class="glyphicon glyphicon-edit"></span> Editar</a> 
+            <a href="deletar_cliente/{{ cliente.getId() }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Excluir</a>
+        </td>
+    </tr>
+    {% endfor %} 
+    </table>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalNovoCliente">
+        Novo Cliente
+    </button>
+    <div class="row col-md-6 col-md-offset-2 custyle"></br></div>
+    <!-- MODAL CLIENTE -->
+    <div class="modal fade" id="modalNovoCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Novo Cliente</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- FORMULARIO NOVO CLIENTE -->
+            <div class="modal-body">
+                <form id="register-form" class="form-signin" method="post" action="{{ url_for('registrar') }}">
+                    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                    <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
+                    Nome
+                    <input type="text" id="inputName" minlength="2" maxlength="50" name="nome" class="form-control" placeholder="Ex: Leonardo Rocha" required autofocus>
+                    <br/>
+                    CPF
+                    <input type="text" id="inputCPF" minlength="11" maxlength="11" name="cpf" class="form-control" placeholder="Ex: 11133344480" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;" required>
+                    <br/>
+                    Email
+                    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Ex: seuemail@seuprovedor.com.br" required>
+                    <br/>
+                    Senha
+                    <input type="password" minlength="2" maxlength="20" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
+                    <br/>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

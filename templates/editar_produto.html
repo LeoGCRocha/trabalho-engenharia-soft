@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/admin.css') }}">
+<div class="container" id="container-cruds">
+    <form id="register-form" class="form-signin" method="post" action="{{ url_for('editar_produto') }}">
+        <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
+        Id
+        <input class="form-control" type="text" name="id" class="form-control" value="{{ produto.getId() }}" readonly>
+        Nome
+        <input class="form-control" type="text" name="nome" class="form-control" placeholder="Ex: Tenis Nike" value="{{ produto.getNome() }}" required autofocus>
+        <br/>
+        Descrição
+        <textarea class="form-control" style="resize: none;" name="descricao" rows="4" cols="50">{{ produto.getDescricao() }}</textarea>
+        <br/>
+        Preco
+        <input value="{{ produto.getPreco() }}" class="form-control" type="number" name="preco" step="0.01" required>
+        </br>
+        Link da Imagem
+        <input class="form-control" type="text" value="{{ produto.getLinkImagem() }}" name="imagem" required>
+        <br/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
+    </form>
+</div>
+{% endblock %}

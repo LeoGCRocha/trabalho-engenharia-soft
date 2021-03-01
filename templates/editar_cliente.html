@@ -1,0 +1,28 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<style>
+form{
+    background-color: white;
+    margin: 10px auto;
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+}
+</style>
+<form id="register-form" class="form-signin" method="post" action="{{ url_for('editarCliente') }}">
+    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
+    <input type="text" id="inputId" name="idInput" class="form-control" value="{{ cli.getId() }}" readonly>
+    Nome
+    <input type="text" id="inputName" name="nome" class="form-control" value="{{ cli.getNome() }}" required autofocus>
+    <br/>
+    CPF
+    <input type="text" id="inputCPF" name="cpf" class="form-control" value="{{ cli.getCpf() }}" required>
+    <br/>
+    Email
+    <input type="email" id="inputEmail" name="email" class="form-control" value="{{ cli.getEmail() }}" required>
+    <br/>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
+</form>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/admin.css') }}">
+<div class="container" id="container-cruds">
+    <div class="container" id="container-produto">
+        <h1>CRUD <span class="badge bg-danger">Produtos</span></h1>
+        <div class="row col-md-6 col-md-offset-2 custyle">
+    </div>
+    <table id="tabela" class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th class="text-center">Ação</th>
+        </tr>
+    </thead>
+    {% for produto in produtos %}
+    <tr>
+        <td>{{ produto.getId() }}</td>
+        <td>{{ produto.getNome() }}</td>
+        <td>{{ produto.getDescricao() }}</td>
+        <td>{{ produto.getPreco() }}</td>
+        <td class="text-center">
+            <a style="margin: 5px;" class='btn btn-info btn-xs' href="editar_produto/{{ produto.getId() }}"><span class="glyphicon glyphicon-edit"></span> Editar</a> 
+            <a href="deletar_produto/{{ produto.getId() }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Excluir</a>
+        </td>
+    </tr>
+    {% endfor %} 
+    </table>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalNovoProduto">
+        Novo Produto
+    </button>
+    <div class="row col-md-6 col-md-offset-2 custyle"></br></div>
+    <!-- MODAL PRODUTO -->
+    <div class="modal fade" id="modalNovoProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Novo Produto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- FORMULARIO NOVO PRODUTO -->
+            <div class="modal-body">
+                <form id="register-form" class="form-signin" method="post" action="{{ url_for('registrar_produto') }}">
+                    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                    <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
+                    Nome
+                    <input class="form-control" type="text" name="nome" class="form-control" placeholder="Ex: Tenis Nike" required autofocus>
+                    <br/>
+                    Descrição
+                    <textarea class="form-control" style="resize: none;" name="descricao" rows="4" cols="50"></textarea>
+                    <br/>
+                    Preco
+                    <input  class="form-control" type="number" name="preco" step="0.01" required>
+                    </br>
+                    Link da Imagem
+                    <input class="form-control" type="text" name="imagem" required>
+                    <br/>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
