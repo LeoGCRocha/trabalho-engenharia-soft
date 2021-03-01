@@ -15,3 +15,5 @@ class Produto:
         return self.__preco
     def getLinkImagem(self):
         return self.__linkImagem
+    def setPreco(self, preco):
+        self.__preco = preco

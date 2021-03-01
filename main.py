@@ -4,12 +4,13 @@ import hashlib
 from cliente import Cliente
 from conexao import Conexao
 from produto import Produto
+import sys
+import json
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
 c = Conexao()
-import sys
-# sys.setdefaultencoding() does not exist, here!
-reload(sys)  # Reload does the trick!
+# UTF8
+reload(sys)  
 sys.setdefaultencoding('UTF8')
 # SOLUÇÃO PARA ERRO DE ROTAS
 # ROTAS
@@ -181,21 +182,19 @@ def editar_produto_metodo():
 @app.route("/adicionar_carrinho/<id>")
 def adicionar_carrinho(id):
   notLogin()
-  prod = c.getProduto(id)
-  inProds = False
   lista = session['carrinho_de_compras']
-  for prodX in lista:
-    if prodX.getId() == prod.getId():
-      inProds = True
-      break
-  if not inProds:
-    lista.append(prod)
-    session['carrinho_de_compras'] = lista
-  return redirect(url_for('main_page')) # USUARIO JA ESTA LOGADO E DEVE SER REDIRECIONADO
+  if id not in lista:
+    lista.append(str(id))
+  session['carrinho_de_compras'] = lista
+  return redirect(url_for('carrinho_de_compras')) # USUARIO JA ESTA LOGADO E DEVE SER REDIRECIONADO
 @app.route("/carrinho_de_compras")
 def carrinho_de_compras():
   notLogin()
-  return render_template("carrinho_de_compras.html", produtos = session['carrinho_de_compras'])
+  lista = session['carrinho_de_compras']
+  prodList = []
+  for idAtual in lista:
+    prodList.append(c.getProduto(idAtual))
+  return render_template("carrinho_de_compras.html", produtos = prodList)
 # IS ADMIN ?!
 def isAdmin():
   if 'login' not in session:
