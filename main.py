@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, url_for, redirect, session, request
-from importlib import reload
 import hashlib
 from cliente import Cliente
 from conexao import Conexao
@@ -11,8 +10,8 @@ app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
 c = Conexao()
 # UTF8
-#reload(sys)  
-#sys.setdefaultencoding('UTF8')
+reload(sys)  
+sys.setdefaultencoding('UTF8')
 # SOLUÇÃO PARA ERRO DE ROTAS
 # ROTAS
 @app.route('/')

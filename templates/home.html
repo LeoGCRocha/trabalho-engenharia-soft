@@ -2,7 +2,6 @@
 {% block content %}
 <div class="container" id="boas-vindas">
   <h3 style="text-align: center;"> Bem vindo  {{ u.getNome() }}, oque deseja?</h3>
-  <button type="button" class="btn btn-success">Editar perfil</button>
   <a class="btn btn-info" href="/carrinho_de_compras">Carrinho de compras</a>
   <a href="{{ url_for('deslogar') }}" class="btn btn-danger">Deslogar</a>
 </div>  
