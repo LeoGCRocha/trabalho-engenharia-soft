@@ -5,16 +5,16 @@
     <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
     Nome
-    <input type="text" id="inputName" name="nome" class="form-control" placeholder="Ex: Leonardo Rocha" required autofocus>
+    <input type="text" id="inputName" minlength="2" maxlength="50" name="nome" class="form-control" placeholder="Ex: Leonardo Rocha" required autofocus>
     <br/>
     CPF
-    <input type="text" id="inputCPF" name="cpf" class="form-control" placeholder="Ex: 11133344480" required>
+    <input type="text" id="inputCPF" minlength="11" maxlength="11" name="cpf" class="form-control" placeholder="Ex: 11133344480" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;" required>
     <br/>
     Email
     <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Ex: seuemail@seuprovedor.com.br" required>
     <br/>
     Senha
-    <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
+    <input type="password" minlength="2" maxlength="20" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
     <br/>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
     <a class="btn btn-lg btn-primary btn-block" href="{{ url_for('main_page') }}">Voltar</a>
