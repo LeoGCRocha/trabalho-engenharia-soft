@@ -15,10 +15,10 @@ form{
     <h1 class="h3 mb-3 font-weight-normal">Dados para cadastro:</h1>
     <input type="text" id="inputId" name="idInput" class="form-control" value="{{ cli.getId() }}" readonly>
     Nome
-    <input type="text" id="inputName" name="nome" class="form-control" value="{{ cli.getNome() }}" required autofocus>
+    <input type="text" id="inputName" minlength="2" maxlength="50" name="nome" class="form-control" value="{{ cli.getNome() }}" required autofocus>
     <br/>
     CPF
-    <input type="text" id="inputCPF" name="cpf" class="form-control" value="{{ cli.getCpf() }}" required>
+    <input type="text" id="inputCPF" minlength="11" maxlength="11" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;" name="cpf" class="form-control" value="{{ cli.getCpf() }}" required>
     <br/>
     Email
     <input type="email" id="inputEmail" name="email" class="form-control" value="{{ cli.getEmail() }}" required>
