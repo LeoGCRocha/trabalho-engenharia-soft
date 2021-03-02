@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from flask import Flask, render_template, url_for, redirect, session, request
 import hashlib
 from cliente import Cliente
@@ -9,9 +9,8 @@ import json
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
 c = Conexao()
-# UTF8
-reload(sys)  
-sys.setdefaultencoding('UTF8')
+import importlib
+importlib.reload(sys)
 # SOLUÇÃO PARA ERRO DE ROTAS
 # ROTAS
 @app.route('/')
@@ -36,9 +35,6 @@ def logar():
       return redirect(url_for("admin"))
   else:
     clientes = c.clientes()
-    hashSenha = hashlib.md5()
-    hashSenha.update(senha)
-    senha = hashSenha.hexdigest()
     for user in clientes:
       if user.getEmail() == email:
         if senha == user.getSenha():
@@ -66,8 +62,6 @@ def registrar():
     cpf = request.form['cpf']
     m = hashlib.md5()
     senha = request.form['senha'] # PARA SENHA NÃO FICAR SENDO VISIVEL NO BANCO DE DADOS
-    m.update(senha)
-    senha = m.hexdigest()
     cliente = Cliente(0,cpf, nome,email,senha) # ID FICA PADRÃO 0 POIS O BANCO DE DADOS IRA DEFINIR
     c.cadastrar(cliente)
   return redirect(url_for('main_page'))
@@ -109,6 +103,7 @@ def admin_cliente():
 def deletar_cliente(id):  
   admin = isAdmin()
   if admin:
+    c.deletarUsuario(id)
     return redirect(url_for('admin_cliente'))
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
