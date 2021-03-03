@@ -1,6 +1,6 @@
 import psycopg2
-from cliente import Cliente
-from produto import Produto
+from dominio.cliente import Cliente
+from dominio.produto import Produto
 class Conexao:
 	def __init__(self):
 		self.__con = psycopg2.connect(host='localhost', database='browrrashoes',user='postgres', password='postgres')

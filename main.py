@@ -1,11 +1,10 @@
 # coding: utf-8
 from flask import Flask, render_template, url_for, redirect, session, request
 import hashlib
-from cliente import Cliente
-from conexao import Conexao
-from produto import Produto
+from dominio.cliente import Cliente
+from servicostecnicos.conexao import Conexao
+from dominio.produto import Produto
 import sys
-import json
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
 c = Conexao()
