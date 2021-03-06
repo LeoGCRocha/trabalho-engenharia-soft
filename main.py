@@ -177,8 +177,14 @@ def editar_produto_metodo():
 def adicionar_carrinho(id):
   notLogin()
   lista = session['carrinho_de_compras']
-  if id not in lista:
-    lista.append(str(id))
+  produtoEncontrado = False
+  for a in range(0, len(lista)):
+    codAtual = lista[a].split("#")
+    if codAtual[0] == id:
+      produtoEncontrado = True
+      lista[a] = codAtual[0]+"#"+str(int(codAtual[1])+1)
+  if not produtoEncontrado:
+    lista.append(str(id)+"#1")
   session['carrinho_de_compras'] = lista
   return redirect(url_for('carrinho_de_compras')) # USUARIO JA ESTA LOGADO E DEVE SER REDIRECIONADO
 @app.route("/carrinho_de_compras")
@@ -186,18 +192,24 @@ def carrinho_de_compras():
   notLogin()
   lista = session['carrinho_de_compras']
   prodList = []
+  quant = []
   total = 0
-  for idAtual in lista:
-    prod = c.getProduto(idAtual)
+  for a in range(0, len(lista)):
+    codAtual = lista[a].split("#")
+    prod = c.getProduto(codAtual[0])
+    quant.append(str(codAtual[1]))
+    total = total + (int(prod.getPreco()) * int(codAtual[1]))
+    prod.setQuantidade(int(codAtual[1]))
     prodList.append(prod)
-    total += prod.getPreco()
   return render_template("carrinho_de_compras.html", produtos = prodList, tot = total)
 @app.route("/remover_carrinho/<id>")
 def remover_carrinho(id):
   notLogin()
   lista = session['carrinho_de_compras']
-  if id in lista:
-    lista.remove(id)
+  for a in range(0, len(lista)):
+    codAtual = lista[a].split("#")
+    if codAtual[0] == id:
+      lista.remove(lista[a])
   session['carrinho_de_compras'] = lista
   return redirect(url_for('carrinho_de_compras'))
 # IS ADMIN ?!
