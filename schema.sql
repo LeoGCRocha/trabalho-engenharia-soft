@@ -13,3 +13,10 @@ create table produto(
 	preco numeric(15,2) not null,
 	link_imagem text not null
 );
+create table endereco(
+	id serial primary key,
+	endereco varchar(100) not null,
+	numero int not null,
+	complemento varchar(100),
+	id_cliente references cliente(id) on delete cascade
+)
