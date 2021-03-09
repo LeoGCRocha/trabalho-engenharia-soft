@@ -5,11 +5,11 @@ class Conexao:
 	def __init__(self):
 		self.__con = psycopg2.connect(host='localhost', database='browrrashoes',user='postgres', password='postgres')
 		self.__cur = self.__con.cursor()
+	# Criar, Deletar, Editar e Pegar Clientes
 	def cadastrar(self,u):
 		sql = "INSERT INTO CLIENTE	(cpf,nome,email,senha)VALUES(%s,%s,%s,%s);"
 		self.__cur.execute(sql, (u.getCpf(), u.getNome(),u.getEmail(), u.getSenha()))
 		self.__con.commit()
-	# CRUD CLIENTES
 	def clientes(self):
 		lista = []
 		sql = "SELECT * FROM CLIENTE"
@@ -17,18 +17,22 @@ class Conexao:
 		rec = self.__cur.fetchall()
 		for r in rec:
 			c = Cliente(r[0], r[4],r[1], r[3], r[2])
+			endereco = self.pegar_endereco_por_id_cliente(r[0])
+			c.setEndereco(endereco)
 			lista.append(c)
 		return lista
-	def getUsuario(self, id):
+	def get_cliente_por_id(self, id):
 		lista = []
 		sql = "SELECT * FROM CLIENTE WHERE ID = %s"
 		self.__cur.execute(sql, str(id))
 		rec = self.__cur.fetchall()
 		for r in rec:
 			c = Cliente(r[0], r[4],r[1], r[3], r[2])
+			endereco = self.pegar_endereco_por_id_cliente(r[0])
+			c.setEndereco(endereco)
 			lista.append(c)
 		return lista[0]
-	def deletarUsuario(self, id):
+	def deletar_cliente_por_id(self, id):
 		sql = "DELETE FROM CLIENTE WHERE id = %s"
 		self.__cur.execute(sql, id)
 		self.__con.commit()
@@ -36,6 +40,17 @@ class Conexao:
 		sql = "UPDATE CLIENTE SET \"nome\" = %s, \"cpf\"=%s, \"email\"=%s WHERE id = %s"
 		self.__cur.execute(sql,(cliente.getNome(), cliente.getCpf(), cliente.getEmail(), cliente.getId()))
 		self.__con.commit()
+	# Criar, Deletar, Editar e Pegar Enderecos
+	def pegar_endereco_por_id_cliente(self, id_cliente):
+		sql = "SELECT * FROM ENDERECO WHERE cliente_id = %s"
+		self.__cur.execute(sql, str(id_cliente))
+		rec = self.__cur.fetchall()
+		if(len(rec) == 0):
+			return None
+		else:
+			obj = rec[0]
+			endereco = Endereco(obj[0], obj[1], obj[2])
+			return endereco
 	# CRUD PRODUTOS
 	def getProdutos(self):
 		lista = []

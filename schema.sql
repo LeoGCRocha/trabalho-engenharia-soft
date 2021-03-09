@@ -16,7 +16,6 @@ create table produto(
 create table endereco(
 	id serial primary key,
 	endereco varchar(100) not null,
-	numero int not null,
-	complemento varchar(100),
-	id_cliente references cliente(id) on delete cascade
-)
+	cep varchar(11) not null,
+	cliente_id integer REFERENCES cliente (id) ON DELETE CASCADE
+);

@@ -2,12 +2,18 @@
 {% block content %}
 <div class="container" id="boas-vindas">
   <h3 style="text-align: center;"> Bem vindo  {{ u.getNome() }}, oque deseja?</h3>
+  <a class="btn btn-info" href="/editar_endereco">Editar endereço</a>
   <a class="btn btn-info" href="/carrinho_de_compras">Carrinho de compras</a>
   <a href="{{ url_for('deslogar') }}" class="btn btn-danger">Deslogar</a>
 </div>  
 <div class="container" id="produtos">
   <h3 style="text-align: center;"> Ultimas novidades na loja: </h3>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  {% if semEndereco == true %}
+  <div class="alert alert-danger" role="alert">
+    Você ainda não alterou seu endereço, ajuste agora <a href="/editar_endereco" class="alert-link">clicando aqui</a>.
+  </div>
+  {% endif %}
   <!-- PRODUTOS -->
     <div class="container mt-5">
         <div class="row d-flex justify-content-center g-1">

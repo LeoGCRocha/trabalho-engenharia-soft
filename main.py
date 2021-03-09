@@ -21,7 +21,9 @@ def main_page():
       return redirect(url_for("admin"))
     else:
       prod = c.getProdutos()
-      return render_template('home.html', u = c.getUsuario(session['login']), produtos = prod)
+      clienteAtual = c.get_cliente_por_id(session['login'])
+      isDefinido = clienteAtual.getEndereco() == None
+      return render_template('home.html', u = clienteAtual, produtos = prod, semEndereco = isDefinido)
 # METODO PARA EFETUAR LOGIN
 # DESENVOLVER PAGINA INICIAL PARA ADMIN
 @app.route('/logar', methods=['POST'])
@@ -52,6 +54,10 @@ def registro():
     redirect(url_for('main_page')) # USUARIO JA ESTA LOGADO E DEVE SER REDIRECIONADO
   else:
     return render_template("registro.html")
+# PAGINA PARA EDITAR ENDEREÇO 
+@app.route("/editar_endereco")
+def endereco():
+  return render_template("editar_endereco.html")
 # METODO PARA REALIZAÇÃO DO REGISTRO
 @app.route("/registrar", methods= ['POST'])
 def registrar():
@@ -63,6 +69,12 @@ def registrar():
     senha = request.form['senha'] # PARA SENHA NÃO FICAR SENDO VISIVEL NO BANCO DE DADOS
     cliente = Cliente(0,cpf, nome,email,senha) # ID FICA PADRÃO 0 POIS O BANCO DE DADOS IRA DEFINIR
     c.cadastrar(cliente)
+  return redirect(url_for('main_page'))
+# METODO PARA AJUSTAR ENDERECO 
+@app.route("/metodo_editar_endereco", methods= ['POST'])
+def metodo_editar_endereco():
+  if request.method == 'POST':
+    pass # CONTINUAR DAQUI
   return redirect(url_for('main_page'))
 # LOGOUT
 @app.route("/deslogar")
@@ -102,7 +114,7 @@ def admin_cliente():
 def deletar_cliente(id):  
   admin = isAdmin()
   if admin:
-    c.deletarUsuario(id)
+    c.deletar_cliente_por_id(id)
     return redirect(url_for('admin_cliente'))
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
@@ -111,7 +123,7 @@ def deletar_cliente(id):
 def pagEditarCliente(id):
   admin = isAdmin()
   if admin:
-    cliente = c.getUsuario(id)
+    cliente = c.get_cliente_por_id(id)
     return render_template("editar_cliente.html", cli = cliente)
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
@@ -120,7 +132,7 @@ def editarCliente():
   nome = request.form['nome']
   cpf = request.form['cpf']
   email = request.form['email']
-  cliente = c.getUsuario(request.form['idInput'])
+  cliente = c.get_cliente_por_id(request.form['idInput'])
   cliente.setNome(nome)
   cliente.setEmail(email)
   cliente.setCpf(cpf)

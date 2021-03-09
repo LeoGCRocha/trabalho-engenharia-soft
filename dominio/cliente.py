@@ -1,5 +1,5 @@
 class Cliente:
-    def __init__(self, id = "", cpf = "",nome = "",email = "", senha = "",endereco = ""):
+    def __init__(self, id = "", cpf = "",nome = "",email = "", senha = "",endereco = None):
         self.__id = id
         self.__nome = nome
         self.__email = email
@@ -24,3 +24,5 @@ class Cliente:
         self.__cpf = cpf
     def setEmail(self, email):
         self.__email = email
+    def setEndereco(self, endereco):
+        self.__endereco = endereco 

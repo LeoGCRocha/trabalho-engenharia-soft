@@ -1,5 +1,5 @@
 class Produto:
-    def __init__(self, id = "", nome = "",descricao = "",preco = "", linkImagem = "", quantidade = 0):
+    def __init__(self, id = "", nome = "",descricao = "",preco = "", linkImagem = "", quantidade = 0, endereco = ""):
         self.__id = id
         self.__nome = nome
         self.__descricao = descricao
@@ -21,3 +21,7 @@ class Produto:
         self.__quantidade = quantidade
     def getQuantidade(self):
         return self.__quantidade
+    def setEndereco(self, endereco):
+        self.__endereco = endereco
+    def getEndereco(self):
+        return self.__endereco

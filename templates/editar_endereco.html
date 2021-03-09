@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<style>
+form{
+    background-color: white;
+    margin: 10px auto;
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+}
+</style>
+<form id="register-form" class="form-signin" method="post" action="{{ url_for('metodo_editar_endereco') }}">
+    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Informações para entrega:</h1>
+    Endereco
+    <input type="text" id="inputEndereco" name="enderecoInput" class="form-control">
+    <br/s>
+    CEP
+    <input type="text" id="inputCEP" minlength="11" maxlength="11" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;" name="cep" class="form-control" required>
+    <br/>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
+</form>
+{% endblock %}
