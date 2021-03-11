@@ -1,6 +1,7 @@
 import psycopg2
 from dominio.cliente import Cliente
 from dominio.produto import Produto
+from dominio.endereco import Endereco
 class Conexao:
 	def __init__(self):
 		self.__con = psycopg2.connect(host='localhost', database='browrrashoes',user='postgres', password='postgres')
@@ -49,6 +50,9 @@ class Conexao:
 			return None
 		else:
 			obj = rec[0]
+			print(obj)
+			print(obj[1])
+			print(obj[2])
 			endereco = Endereco(obj[0], obj[1], obj[2])
 			return endereco
 	# CRUD PRODUTOS
@@ -81,4 +85,10 @@ class Conexao:
 	def editar_produto(self, produto):
 		sql = "UPDATE PRODUTO SET \"nome\" = %s, \"link_imagem\"=%s, \"descricao\"=%s, \"preco\"=%s WHERE id = %s"
 		self.__cur.execute(sql,(produto.getNome(), produto.getLinkImagem(), produto.getDescricao(), produto.getPreco(), produto.getId()))
+		self.__con.commit()
+	# CADASTRAR ENDERECO
+	def cadastrar_endereco(self, cliente):
+		sql = "INSERT INTO ENDERECO(endereco,cep,cliente_id)VALUES(%s,%s,%s);"
+		endereco = cliente.getEndereco()
+		self.__cur.execute(sql, (endereco.getEndereco(), endereco.getCEP(),cliente.getId()))
 		self.__con.commit()

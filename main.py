@@ -2,6 +2,7 @@
 from flask import Flask, render_template, url_for, redirect, session, request
 import hashlib
 from dominio.cliente import Cliente
+from dominio.endereco import Endereco
 from servicostecnicos.conexao import Conexao
 from dominio.produto import Produto
 import sys
@@ -57,7 +58,13 @@ def registro():
 # PAGINA PARA EDITAR ENDEREÇO 
 @app.route("/editar_endereco")
 def endereco():
-  return render_template("editar_endereco.html")
+  notLogin()
+  cliente = c.get_cliente_por_id(session['login'])
+  if cliente.getEndereco() == None:
+    # Nenhum endereço cadastro para passar informações
+    return render_template("editar_endereco.html", editar = False)
+  else:
+    return render_template("editar_endereco.html", endereco = cliente.getEndereco(), editar = True)
 # METODO PARA REALIZAÇÃO DO REGISTRO
 @app.route("/registrar", methods= ['POST'])
 def registrar():
@@ -74,7 +81,15 @@ def registrar():
 @app.route("/metodo_editar_endereco", methods= ['POST'])
 def metodo_editar_endereco():
   if request.method == 'POST':
-    pass # CONTINUAR DAQUI
+    notLogin()
+    if request.form['id'] == "0":
+      cliente = c.get_cliente_por_id(session['login'])
+      endereco = Endereco(0,request.form['endereco'],request.form['cep'])
+      cliente.setEndereco(endereco)
+      c.cadastrar_endereco(cliente)
+    else:
+      # EDITANDO ENDERECO
+      pass
   return redirect(url_for('main_page'))
 # LOGOUT
 @app.route("/deslogar")
@@ -86,7 +101,7 @@ def deslogar():
 @app.route("/home")
 def home():
   notLogin()
-  # PAGINA ONDE SÃO REALIZADA AS VENDAS DE PRODUTOS
+  # PAGINA ONDE SÃO REALIZADA AS VENDAS DE ODUTOS
   return render_template('home.html')
 # NOT LOGIN REDIRECT
 def notLogin():
@@ -161,7 +176,7 @@ def registrar_produto():
 def deletar_produto(id):  
   admin = isAdmin()
   if admin:
-    c.deletar_produto(id)
+    c.deletar_produto(ids)
     return redirect(url_for('admin_produto'))
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
