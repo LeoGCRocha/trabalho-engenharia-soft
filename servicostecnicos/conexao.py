@@ -50,9 +50,6 @@ class Conexao:
 			return None
 		else:
 			obj = rec[0]
-			print(obj)
-			print(obj[1])
-			print(obj[2])
 			endereco = Endereco(obj[0], obj[1], obj[2])
 			return endereco
 	# CRUD PRODUTOS

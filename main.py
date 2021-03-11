@@ -237,6 +237,7 @@ def remover_carrinho(id):
     codAtual = lista[a].split("#")
     if codAtual[0] == id:
       lista.remove(lista[a])
+      break
   session['carrinho_de_compras'] = lista
   return redirect(url_for('carrinho_de_compras'))
 # IS ADMIN ?!
@@ -258,5 +259,16 @@ def finalizar_pedido():
   if len(carrinho) == 0 or cliente.getEndereco() == None:
     return render_template("finalizar_pedido.html", completo = False)
   else:
+    notLogin()
+    listaDeProdutos = []
+    lista = session['carrinho_de_compras']
+    total = 0
+    for a in range(0, len(lista)):
+      codAtual = lista[a].split("#")
+      prod = c.getProduto(codAtual[0])
+      prod.setQuantidade(codAtual[1])
+      listaDeProdutos.append(prod)
+      total = total + (prod.getPreco() * prod.getQuantidade())
+    carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
     return render_template("finalizar_pedido.html", completo = True)
 run()
