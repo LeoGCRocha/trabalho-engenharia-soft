@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.container{
+    background-color: white;
+    border-radius: 10px;
+    margin: 10px auto;
+    padding: 10px;
+}
+</style>
+<div class="container">
+    {% if completo == False  %}
+    <h4 style="text-align: center;">
+        Lembre-se de adicionar um produto ao carrinho de compras, e certificar de seu endereço estar ajustado.
+    </h4>
+    <a href="/" class="btn btn-success btn-block btn-lg ml-2 pay-button">Pagina Inicial</a>
+    {% else %}
+    COMPLETO
+    {% endif %}
+</div>
+{% endblock %}

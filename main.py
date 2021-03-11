@@ -249,4 +249,14 @@ def isAdmin():
   return True
 def run():
     app.run(debug=True)
+# PAGINA FINALIZAR PEDIDO
+@app.route("/finalizar_pedido")
+def finalizar_pedido():
+  notLogin()
+  carrinho = session['carrinho_de_compras'] 
+  cliente = c.get_cliente_por_id(session['login'])
+  if len(carrinho) == 0 or cliente.getEndereco() == None:
+    return render_template("finalizar_pedido.html", completo = False)
+  else:
+    return render_template("finalizar_pedido.html", completo = True)
 run()
