@@ -19,3 +19,15 @@ create table endereco(
 	cep varchar(11) not null,
 	cliente_id integer REFERENCES cliente (id) ON DELETE CASCADE
 );
+create table pagamento(
+	id serial primary key,
+	endereco_id integer REFERENCES endereco (id) ON DELETE SET NULL,
+	cliente_id integer REFERENCES cliente (id) ON DELETE SET NULL,
+	total numeric(20,2) not null
+);
+create table pagamentoproduto(
+	id serial primary key,
+	pagamento_id integer REFERENCES produto (id) ON DELETE SET NULL,
+	produto_id integer REFERENCES produto (id) ON DELETE SET NULL,
+	quantidade int not null
+);

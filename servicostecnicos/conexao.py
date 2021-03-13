@@ -89,3 +89,6 @@ class Conexao:
 		endereco = cliente.getEndereco()
 		self.__cur.execute(sql, (endereco.getEndereco(), endereco.getCEP(),cliente.getId()))
 		self.__con.commit()
+	# FINALIZAR PAGAMENTO
+	def finalizar_pagamento(self, pagamento):
+		sql = "INSERT INTO"
