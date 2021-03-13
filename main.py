@@ -30,20 +30,21 @@ def main_page():
 # DESENVOLVER PAGINA INICIAL PARA ADMIN
 @app.route('/logar', methods=['POST'])
 def logar():
-  senha = request.form.get('senha')
-  email = request.form['email']
-  if email == "admin@admin":
-    if senha == "admin":
-      session['login'] = "admin@admin"
-      return redirect(url_for("admin"))
-  else:
-    clientes = c.clientes()
-    for user in clientes:
-      if user.getEmail() == email:
-        if senha == user.getSenha():
-          session['login'] = user.getId()
-          session['email'] = user.getEmail()
-          session['carrinho_de_compras'] = []
+  if request.method == 'POST':
+    senha = request.form.get('senha')
+    email = request.form['email']
+    if email == "admin@admin":
+      if senha == "admin":
+        session['login'] = "admin@admin"
+        return redirect(url_for("admin"))
+    else:
+      clientes = c.clientes()
+      for user in clientes:
+        if user.getEmail() == email:
+          if senha == user.getSenha():
+            session['login'] = user.getId()
+            session['email'] = user.getEmail()
+            session['carrinho_de_compras'] = []
   return redirect(url_for('main_page'))
 # ADMIN PAGE
 @app.route("/admin")
@@ -271,4 +272,8 @@ def finalizar_pedido():
       total = total + float(prod.getPreco()) * float(prod.getQuantidade())
     carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
     return render_template("finalizar_pedido.html", completo = True, carrinho = carrinhoDeCompras)
+@app.route("finalizar_compra", methods=['POST'])
+def finalizar_compra():
+  # COTINUAR DAQUI
+  return redirect(url_for('main_page'))
 run()
