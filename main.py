@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for, redirect, session, request
 import hashlib
 from dominio.cliente import Cliente
 from dominio.endereco import Endereco
+from dominio.pagamento import Pagamento
 from dominio.carrinho_de_compras import CarrinhoDeCompras
 from servicostecnicos.conexao import Conexao
 from dominio.produto import Produto
@@ -272,8 +273,21 @@ def finalizar_pedido():
       total = total + float(prod.getPreco()) * float(prod.getQuantidade())
     carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
     return render_template("finalizar_pedido.html", completo = True, carrinho = carrinhoDeCompras)
-@app.route("finalizar_compra", methods=['POST'])
+@app.route("/finalizar_compra", methods=['POST'])
 def finalizar_compra():
-  # COTINUAR DAQUI
+  listaDeProdutos = []
+  lista = session['carrinho_de_compras']
+  total = 0
+  for a in range(0, len(lista)):
+    codAtual = lista[a].split("#")
+    prod = c.getProduto(codAtual[0])
+    prod.setQuantidade(codAtual[1])
+    listaDeProdutos.append(prod)
+    total = total + float(prod.getPreco()) * float(prod.getQuantidade())
+  carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
+  cliente = c.get_cliente_por_id(session['login'])
+  pagamento = Pagamento(0,carrinhoDeCompras, cliente)
+  c.finalizar_pagamento(pagamento)
+  session['carrinho_de_compras'] = []
   return redirect(url_for('main_page'))
 run()

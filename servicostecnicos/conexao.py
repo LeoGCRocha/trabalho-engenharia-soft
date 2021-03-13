@@ -2,11 +2,13 @@ import psycopg2
 from dominio.cliente import Cliente
 from dominio.produto import Produto
 from dominio.endereco import Endereco
+from dominio.carrinho_de_compras import CarrinhoDeCompras
+from dominio.pagamento import Pagamento
 class Conexao:
 	def __init__(self):
 		self.__con = psycopg2.connect(host='localhost', database='browrrashoes',user='postgres', password='postgres')
 		self.__cur = self.__con.cursor()
-	# Criar, Deletar, Editar e Pegar Clientes
+	# CRUD
 	def cadastrar(self,u):
 		sql = "INSERT INTO CLIENTE	(cpf,nome,email,senha)VALUES(%s,%s,%s,%s);"
 		self.__cur.execute(sql, (u.getCpf(), u.getNome(),u.getEmail(), u.getSenha()))
@@ -91,4 +93,13 @@ class Conexao:
 		self.__con.commit()
 	# FINALIZAR PAGAMENTO
 	def finalizar_pagamento(self, pagamento):
-		sql = "INSERT INTO"
+		carrinho = pagamento.getCarrinho()
+		cliente = pagamento.getCliente()
+		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total)VALUES(%s,%s, %s) RETURNING id;"
+		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal()))
+		idPagamento = self.__cur.fetchone()[0]
+		self.__con.commit()
+		for produto in carrinho.getProdutos():
+			sql = "INSERT INTO pagamentoproduto(pagamento_id,produto_id,quantidade)VALUES(%s,%s,%s);"
+			self.__cur.execute(sql, (idPagamento, produto.getId(), produto.getQuantidade()))
+			self.__con.commit()

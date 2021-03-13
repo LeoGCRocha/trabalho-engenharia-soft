@@ -27,7 +27,7 @@ create table pagamento(
 );
 create table pagamentoproduto(
 	id serial primary key,
-	pagamento_id integer REFERENCES produto (id) ON DELETE SET NULL,
+	pagamento_id integer REFERENCES pagamento (id) ON DELETE SET NULL,
 	produto_id integer REFERENCES produto (id) ON DELETE SET NULL,
 	quantidade int not null
 );
