@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for, redirect, session, request
 import hashlib
 from dominio.cliente import Cliente
 from dominio.endereco import Endereco
+from dominio.carrinho_de_compras import CarrinhoDeCompras
 from servicostecnicos.conexao import Conexao
 from dominio.produto import Produto
 import sys
@@ -224,8 +225,7 @@ def carrinho_de_compras():
   for a in range(0, len(lista)):
     codAtual = lista[a].split("#")
     prod = c.getProduto(codAtual[0])
-    quant.append(str(codAtual[1]))
-    total = total + (int(prod.getPreco()) * int(codAtual[1]))
+    total = total + (float(prod.getPreco()) * float(codAtual[1]))
     prod.setQuantidade(int(codAtual[1]))
     prodList.append(prod)
   return render_template("carrinho_de_compras.html", produtos = prodList, tot = total)
@@ -268,7 +268,7 @@ def finalizar_pedido():
       prod = c.getProduto(codAtual[0])
       prod.setQuantidade(codAtual[1])
       listaDeProdutos.append(prod)
-      total = total + (prod.getPreco() * prod.getQuantidade())
+      total = total + float(prod.getPreco()) * float(prod.getQuantidade())
     carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
-    return render_template("finalizar_pedido.html", completo = True)
+    return render_template("finalizar_pedido.html", completo = True, carrinho = carrinhoDeCompras)
 run()

@@ -6,16 +6,107 @@
     border-radius: 10px;
     margin: 10px auto;
     padding: 10px;
+    text-align: center;
 }
 </style>
-<div class="container">
+<link rel= "stylesheet" type= "text/css" href= "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css">
     {% if completo == False  %}
-    <h4 style="text-align: center;">
-        Lembre-se de adicionar um produto ao carrinho de compras, e certificar de seu endereço estar ajustado.
-    </h4>
-    <a href="/" class="btn btn-success btn-block btn-lg ml-2 pay-button">Pagina Inicial</a>
+    <div class="container"></div>
+        <h4 style="text-align: center;">
+            Lembre-se de adicionar um produto ao carrinho de compras, e certificar de seu endereço estar ajustado.
+        </h4>
+        <a href="/" class="btn btn-success btn-block btn-lg ml-2 pay-button">Pagina Inicial</a>
+    </div>
     {% else %}
-    COMPLETO
+    <div class="container">
+        <h3>TOTAL: R$ {{ carrinho.getTotal() }}</h3>
+        <ul class="list-group">
+            {% for produto in carrinho.getProdutos() %}
+            <li class="list-group-item">{{ produto.getNome() }} x {{ produto.getQuantidade() }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <form method="post" action="" class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Pagmento por cartão de credito</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Nome</label>
+                                    <input class="form-control" id="name" type="text" placeholder="Nome impresso no cartão">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="ccnumber">Número do cartão</label>
+                                    <div class="input-group">
+                                        <input class="form-control" name="cartao-numero" type="text" placeholder="0000 0000 0000 0000">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="mdi mdi-credit-card"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label for="ccmonth">Mês</label>
+                                <select class="form-control" name="mes" id="ccmonth">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="ccyear">Ano</label>
+                                <select class="form-control" name="ano" id="ccyear">
+                                    <option>2014</option>
+                                    <option>2015</option>
+                                    <option>2016</option>
+                                    <option>2017</option>
+                                    <option>2018</option>
+                                    <option>2019</option>
+                                    <option>2020</option>
+                                    <option>2021</option>
+                                    <option>2022</option>
+                                    <option>2023</option>
+                                    <option>2024</option>
+                                    <option>2025</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="cvv">CVV/CVC</label>
+                                    <input class="form-control" name="cvc" id="cvv" type="text" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-success float-right" type="submit">
+                            <i class="mdi mdi-gamepad-circle"></i> Finalizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     {% endif %}
-</div>
 {% endblock %}
