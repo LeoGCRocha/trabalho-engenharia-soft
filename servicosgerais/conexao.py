@@ -132,3 +132,20 @@ class Conexao:
 			pagamento.setCliente(cliente)
 			lista.append(pagamento)
 		return lista
+	def getPagamentos(self, idCliente):
+		lista = []
+		sql = "SELECT * FROM PAGAMENTO WHERE cliente_id = %s"
+		self.__cur.execute(sql, str(idCliente))
+		rec = self.__cur.fetchall()
+		for r in rec:
+			pagamento = Pagamento(r[0])
+			cliente = self.get_cliente_por_id(r[2])
+			endereco = self.pegar_endereco_por_id_cliente(r[2])
+			cliente.setEndereco(endereco)
+			# Pegando todos os produtos nessa compra
+			carrinho = self.carrinho_de_compras(pagamento.getId())
+			carrinho.setTotal(r[3])
+			pagamento.setCarrinho(carrinho)
+			pagamento.setCliente(cliente)
+			lista.append(pagamento)
+		return lista

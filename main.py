@@ -292,8 +292,10 @@ def finalizar_compra():
   return redirect(url_for('main_page'))
 @app.route("/meus_pedidos")
 def meus_pedidos():
-  # CONTINUAR DAQUI
-  return render_template("meus_pedidos.html")
+  notLogin()
+  ped = c.getPagamentos(session['login'])
+  print(len(ped))
+  return render_template("meus_pedidos.html", pagamentos = ped)
 @app.route("/admin_pagamentos")
 def pagamentos():
   pag = c.getPagamentos()
