@@ -5,7 +5,7 @@ from dominio.cliente import Cliente
 from dominio.endereco import Endereco
 from dominio.pagamento import Pagamento
 from dominio.carrinho_de_compras import CarrinhoDeCompras
-from servicostecnicos.conexao import Conexao
+from servicosgerais.conexao import Conexao
 from dominio.produto import Produto
 import sys
 app = Flask(__name__, template_folder='templates')
