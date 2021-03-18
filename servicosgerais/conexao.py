@@ -103,3 +103,33 @@ class Conexao:
 			sql = "INSERT INTO pagamentoproduto(pagamento_id,produto_id,quantidade)VALUES(%s,%s,%s);"
 			self.__cur.execute(sql, (idPagamento, produto.getId(), produto.getQuantidade()))
 			self.__con.commit()
+	def carrinho_de_compras(self, pagamento_id):
+		carrinho = CarrinhoDeCompras()
+		sql = "SELECT * FROM PAGAMENTOPRODUTO WHERE pagamento_id = %s"
+		self.__cur.execute(sql, str(pagamento_id))
+		rec = self.__cur.fetchall()
+		produtos = []
+		print(len(rec))
+		for r in rec:
+			print(r)
+			produto = self.getProduto(r[2])
+			produto.setQuantidade(int(r[3]))
+			produtos.append(produto)
+		return carrinho 
+	def getPagamentos(self):
+		lista = []
+		sql = "SELECT * FROM PAGAMENTO"
+		self.__cur.execute(sql)
+		rec = self.__cur.fetchall()
+		for r in rec:
+			pagamento = Pagamento(r[0])
+			cliente = self.get_cliente_por_id(r[2])
+			endereco = self.pegar_endereco_por_id_cliente(r[2])
+			cliente.setEndereco(endereco)
+			# Pegando todos os produtos nessa compra
+			carrinho = self.carrinho_de_compras(pagamento.getId())
+			carrinho.setTotal(r[3])
+			pagamento.setCarrinho(carrinho)
+			pagamento.setCliente(cliente)
+			lista.append(pagamento)
+		return lista

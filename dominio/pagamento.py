@@ -1,5 +1,7 @@
+from dominio.cliente import *
+from dominio.carrinho_de_compras import * 
 class Pagamento:
-    def __init__(self, id = "", carrinhoDeCompras = [], cliente = "", estado_produto = "Pago"):
+    def __init__(self, id = "", carrinhoDeCompras = CarrinhoDeCompras(), cliente = Cliente(), estado_produto = "Pago"):
         self.__id = id
         self.__carrinhoDeCompras = carrinhoDeCompras
         self.__cliente = cliente
@@ -13,7 +15,7 @@ class Pagamento:
     def setCliente(self, cliente):
         self.__cliente = cliente
     def setCarrinho(self, carrinho):
-        self.__carinho = carrinho
+        self.__carrinhoDeCompras = carrinho
     def getEstadoProduto(self):
         return self.__estado_produto
     def setEstadoProduto(self, estado):
