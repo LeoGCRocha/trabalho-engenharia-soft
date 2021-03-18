@@ -290,6 +290,10 @@ def finalizar_compra():
   c.finalizar_pagamento(pagamento)
   session['carrinho_de_compras'] = []
   return redirect(url_for('main_page'))
+@app.route("/meus_pedidos")
+def meus_pedidos():
+  # CONTINUAR DAQUI
+  return render_template("meus_pedidos.html")
 @app.route("/admin_pagamentos")
 def pagamentos():
   pag = c.getPagamentos()
