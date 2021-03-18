@@ -23,7 +23,7 @@
         <td>
             {% for produto in pagamento.getCarrinho().getProdutos() %}
             <small>
-                {{ produto.getNome() }} x {{ produto.getQuantidade() }}
+                {{ produto.getNome() }} x {{ produto.getQuantidade() }} <br/>
             </small>
             {% endfor %}
         </td>

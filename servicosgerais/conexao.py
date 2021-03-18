@@ -109,12 +109,11 @@ class Conexao:
 		self.__cur.execute(sql, str(pagamento_id))
 		rec = self.__cur.fetchall()
 		produtos = []
-		print(len(rec))
-		for r in rec:
-			print(r)
+		for r in rec:	
 			produto = self.getProduto(r[2])
 			produto.setQuantidade(int(r[3]))
 			produtos.append(produto)
+		carrinho.setProdutos(produtos)
 		return carrinho 
 	def getPagamentos(self):
 		lista = []
