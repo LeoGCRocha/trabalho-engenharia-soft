@@ -1,6 +1,7 @@
 import psycopg2
 from dominio.cliente import Cliente
 from dominio.produto import Produto
+from dominio.estado import Estado
 from dominio.endereco import Endereco
 from dominio.carrinho_de_compras import CarrinhoDeCompras
 from dominio.pagamento import Pagamento
@@ -95,8 +96,8 @@ class Conexao:
 	def finalizar_pagamento(self, pagamento):
 		carrinho = pagamento.getCarrinho()
 		cliente = pagamento.getCliente()
-		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total)VALUES(%s,%s, %s) RETURNING id;"
-		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal()))
+		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total, estado)VALUES(%s,%s, %s, %s) RETURNING id;"
+		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal(), pagamento.getEstado()))
 		idPagamento = self.__cur.fetchone()[0]
 		self.__con.commit()
 		for produto in carrinho.getProdutos():
