@@ -293,8 +293,7 @@ def finalizar_compra():
 @app.route("/meus_pedidos")
 def meus_pedidos():
   notLogin()
-  ped = c.getPagamentos(session['login'])
-  print(len(ped))
+  ped = c.getPagamentosPorCliente(session['login'])
   return render_template("meus_pedidos.html", pagamentos = ped)
 @app.route("/admin_pagamentos")
 def pagamentos():

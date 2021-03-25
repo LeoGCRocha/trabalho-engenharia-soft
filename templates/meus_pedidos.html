@@ -2,6 +2,30 @@
 {% block content %}
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/admin.css') }}">
 <div class="container" id="container-cruds">
-    Lista de todos seus pedidos
+    Lista de todos seus pedidos:
+    <table id="tabela" class="table table-striped custab">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Total</th>
+                <th class="text-center">Estado atual do pedido</th>
+            </tr>
+        </thead>
+        {% for pagamento in pagamentos %}
+        <tr>
+            <td>
+                {% for produto in pagamento.getCarrinho().getProdutos() %}
+                <small>
+                    {{ produto.getNome() }} x {{ produto.getQuantidade() }} <br/>
+                </small>
+                {% endfor %}
+            </td>
+            <td>R$ {{ pagamento.getCarrinho().getTotal() }}</td>
+            <td class="text-center">
+                <p class="btn btn-danger">Em seperação</p>
+            </td>
+        </tr>
+        {% endfor %} 
+        </table>
 </div>
 {% endblock %}

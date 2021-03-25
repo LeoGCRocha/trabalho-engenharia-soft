@@ -132,7 +132,7 @@ class Conexao:
 			pagamento.setCliente(cliente)
 			lista.append(pagamento)
 		return lista
-	def getPagamentos(self, idCliente):
+	def getPagamentosPorCliente(self, idCliente):
 		lista = []
 		sql = "SELECT * FROM PAGAMENTO WHERE cliente_id = %s"
 		self.__cur.execute(sql, str(idCliente))

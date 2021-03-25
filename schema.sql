@@ -19,10 +19,15 @@ create table endereco(
 	cep varchar(11) not null,
 	cliente_id integer REFERENCES cliente (id) ON DELETE CASCADE
 );
+create table estado_pedido(
+	id serial primary key,
+	descricao varchar(100) not null
+);
 create table pagamento(
 	id serial primary key,
 	endereco_id integer REFERENCES endereco (id) ON DELETE SET NULL,
 	cliente_id integer REFERENCES cliente (id) ON DELETE SET NULL,
+	estado_id integer REFERENCES estado_pedido(id),
 	total numeric(20,2) not null
 );
 create table pagamentoproduto(
@@ -31,3 +36,4 @@ create table pagamentoproduto(
 	produto_id integer REFERENCES produto (id) ON DELETE SET NULL,
 	quantidade int not null
 );
+insert into estado_pedido(descricao) values ('Em separação'),('Em trânsito'),('Entregue'),('Finalizado');
