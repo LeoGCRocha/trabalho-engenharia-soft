@@ -13,7 +13,7 @@ class Conexao:
 	def cadastrar(self,u):
 		sql = "INSERT INTO CLIENTE	(cpf,nome,email,senha)VALUES(%s,%s,%s,%s);"
 		self.__cur.execute(sql, (u.getCpf(), u.getNome(),u.getEmail(), u.getSenha()))
-		self.__con.commit()
+		self.__con.commit()	
 	def clientes(self):
 		lista = []
 		sql = "SELECT * FROM CLIENTE"
@@ -96,8 +96,9 @@ class Conexao:
 	def finalizar_pagamento(self, pagamento):
 		carrinho = pagamento.getCarrinho()
 		cliente = pagamento.getCliente()
-		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total, estado)VALUES(%s,%s, %s, %s) RETURNING id;"
-		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal(), pagamento.getEstado()))
+		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total, estado_id)VALUES(%s,%s, %s, %s) RETURNING id;"
+		id_pagamento = pagamento.getEstado().getId()
+		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal(), id_pagamento))
 		idPagamento = self.__cur.fetchone()[0]
 		self.__con.commit()
 		for produto in carrinho.getProdutos():

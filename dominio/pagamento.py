@@ -6,7 +6,7 @@ class Pagamento:
         self.__id = id
         self.__carrinhoDeCompras = carrinhoDeCompras
         self.__cliente = cliente
-        self.__estado_produto = estado
+        self.__estado = estado
     def getId(self):
         return self.__id
     def getCarrinho(self):

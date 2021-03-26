@@ -7,6 +7,7 @@ from dominio.pagamento import Pagamento
 from dominio.carrinho_de_compras import CarrinhoDeCompras
 from servicosgerais.conexao import Conexao
 from dominio.produto import Produto
+from dominio.estado import Estado
 import sys
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "sLqX6wtpQn"
@@ -285,7 +286,7 @@ def finalizar_compra():
     listaDeProdutos.append(prod)
     total = total + float(prod.getPreco()) * float(prod.getQuantidade())
   carrinhoDeCompras = CarrinhoDeCompras(listaDeProdutos, total)
-  estado = Estado(0)
+  estado = Estado(1)
   cliente = c.get_cliente_por_id(session['login'])
   pagamento = Pagamento(0,carrinhoDeCompras, cliente, estado)
   c.finalizar_pagamento(pagamento)
