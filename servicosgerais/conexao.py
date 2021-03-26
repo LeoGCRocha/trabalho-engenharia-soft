@@ -10,6 +10,12 @@ class Conexao:
 		self.__con = psycopg2.connect(host='localhost', database='browrrashoes',user='postgres', password='postgres')
 		self.__cur = self.__con.cursor()
 	# CRUD
+	def getEstadoPorId(self, id):
+		sql = "SELECT * FROM estado_pedido WHERE id = %s"
+		self.__cur.execute(sql, str(id))
+		rec = self.__cur.fetchone()
+		estado = Estado(rec[0],rec[1])
+		return estado
 	def cadastrar(self,u):
 		sql = "INSERT INTO CLIENTE	(cpf,nome,email,senha)VALUES(%s,%s,%s,%s);"
 		self.__cur.execute(sql, (u.getCpf(), u.getNome(),u.getEmail(), u.getSenha()))
@@ -96,9 +102,9 @@ class Conexao:
 	def finalizar_pagamento(self, pagamento):
 		carrinho = pagamento.getCarrinho()
 		cliente = pagamento.getCliente()
-		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, total, estado_id)VALUES(%s,%s, %s, %s) RETURNING id;"
+		sql = "INSERT INTO PAGAMENTO(endereco_id, cliente_id, estado_id, total)VALUES(%s,%s, %s, %s) RETURNING id;"
 		id_pagamento = pagamento.getEstado().getId()
-		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(), carrinho.getTotal(), id_pagamento))
+		self.__cur.execute(sql, (cliente.getEndereco().getId(), cliente.getId(),id_pagamento, carrinho.getTotal()))
 		idPagamento = self.__cur.fetchone()[0]
 		self.__con.commit()
 		for produto in carrinho.getProdutos():
@@ -129,7 +135,8 @@ class Conexao:
 			cliente.setEndereco(endereco)
 			# Pegando todos os produtos nessa compra
 			carrinho = self.carrinho_de_compras(pagamento.getId())
-			carrinho.setTotal(r[3])
+			carrinho.setTotal(r[4])
+			pagamento.setEstado(self.getEstadoPorId(r[3]))
 			pagamento.setCarrinho(carrinho)
 			pagamento.setCliente(cliente)
 			lista.append(pagamento)
@@ -146,8 +153,13 @@ class Conexao:
 			cliente.setEndereco(endereco)
 			# Pegando todos os produtos nessa compra
 			carrinho = self.carrinho_de_compras(pagamento.getId())
-			carrinho.setTotal(r[3])
+			carrinho.setTotal(r[4])
 			pagamento.setCarrinho(carrinho)
 			pagamento.setCliente(cliente)
+			pagamento.setEstado(self.getEstadoPorId(r[3]))
 			lista.append(pagamento)
 		return lista
+	def marcarpagamento(pagamento, estado):
+		sql = "UPDATE pagamento SET \"estado_id\" = %s WHERE id = %s"
+		self.__cur.execute(sql, (str(estado), str(pagamento)))
+		self.__con.commit()

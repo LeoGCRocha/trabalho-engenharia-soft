@@ -299,6 +299,12 @@ def meus_pedidos():
   return render_template("meus_pedidos.html", pagamentos = ped)
 @app.route("/admin_pagamentos")
 def pagamentos():
+  isAdmin()
   pag = c.getPagamentos()
   return render_template("admin_pagamentos.html", pagamentos = pag) 
+@app.route("/marcarpagamento/idpagamento/idestado")
+def marcarpagamento(pagamento, estado):
+  isAdmin()
+  c.setPagamentoEstado(pagamento, estado)
+  return redirect(url_for('main_page'))
 run()

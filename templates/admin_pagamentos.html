@@ -29,7 +29,20 @@
         </td>
         <td>R$ {{ pagamento.getCarrinho().getTotal() }}</td>
         <td class="text-center">
-            <a style="margin: 5px;" class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Marcar como enviado</a> 
+            {% if pagamento.getEstado().getId() == 1 %}
+            <a href="/marcar_pagamento/{{pagamento.getId()}}/2" style="margin: 5px;" class='btn btn-info btn-xs'>
+                <span class="glyphicon glyphicon-edit"></span> Marcar como enviado
+            {% elif pagamento.getEstado().getId() == 2 %}
+            <a href="/marcar_pagamento/{{pagamento.getId()}}/3" style="margin: 5px;" class='btn btn-info btn-xs'>
+                <span class="glyphicon glyphicon-edit"></span> Marcar como entregue
+            {% elif pagamento.getEstado().getId() == 3 %}
+            <a style="margin: 5px;" class='btn btn-info btn-xs'>
+                <span class="glyphicon glyphicon-edit"></span> Marcar como finalizado
+            {% else %}
+            <a style="margin: 5px;" class='btn btn-info btn-xs'>
+                <span class="glyphicon glyphicon-edit"></span> Finalizado
+            {% endif %}
+            </a> 
         </td>
     </tr>
     {% endfor %} 

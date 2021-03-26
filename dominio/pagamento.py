@@ -19,5 +19,5 @@ class Pagamento:
         self.__carrinhoDeCompras = carrinho
     def getEstado(self):
         return self.__estado
-    def setEstadoProduto(self, estado):
+    def setEstado(self, estado):
         self.__estado = estado
