@@ -77,7 +77,7 @@ class Conexao:
 		self.__con.commit()
 	def deletar_produto(self, id):
 		sql = "SELECT * FROM PAGAMENTOPRODUTO WHERE produto_id = %s"
-		self.__cur.execute(sql, str(id_cliente))
+		self.__cur.execute(sql, str(id))
 		rec = self.__cur.fetchall()
 		if len(rec) == 0:
 			sql = "DELETE FROM PRODUTO WHERE id = %s"
