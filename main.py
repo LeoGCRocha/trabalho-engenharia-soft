@@ -180,7 +180,7 @@ def registrar_produto():
 def deletar_produto(id):  
   admin = isAdmin()
   if admin:
-    c.deletar_produto(ids)
+    c.deletar_produto(id)
     return redirect(url_for('admin_produto'))
   else:
     return redirect(url_for('error', description="Você não tem permissão!", errorId = "403"))
@@ -305,6 +305,6 @@ def pagamentos():
 @app.route("/trocar_estado/<idpagamento>/<idestado>")
 def trocar_estado(idpagamento, idestado):
   isAdmin()
-  c.trocar_estado(idpagamento, idestado)
+  c.trocar_estado(idpagamento, estado)
   return redirect(url_for('main_page'))
 run()

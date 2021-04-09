@@ -76,9 +76,13 @@ class Conexao:
 		self.__cur.execute(sql, (produto.getNome(), produto.getDescricao(),produto.getPreco(), produto.getLinkImagem()))
 		self.__con.commit()
 	def deletar_produto(self, id):
-		sql = "DELETE FROM PRODUTO WHERE id = %s"
-		self.__cur.execute(sql, id)
-		self.__con.commit()
+		sql = "SELECT * FROM PAGAMENTOPRODUTO WHERE produto_id = %s"
+		self.__cur.execute(sql, str(id_cliente))
+		rec = self.__cur.fetchall()
+		if len(rec) == 0:
+			sql = "DELETE FROM PRODUTO WHERE id = %s"
+			self.__cur.execute(sql, id)
+			self.__con.commit()
 	def getProduto(self, id):
 		lista = []
 		sql = "SELECT * FROM PRODUTO WHERE ID = %s"
