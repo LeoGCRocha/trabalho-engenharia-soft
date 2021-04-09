@@ -305,6 +305,6 @@ def pagamentos():
 @app.route("/trocar_estado/<idpagamento>/<idestado>")
 def trocar_estado(idpagamento, idestado):
   isAdmin()
-  c.trocar_estado(idpagamento, estado)
+  c.trocar_estado(idpagamento, idestado)
   return redirect(url_for('main_page'))
 run()
