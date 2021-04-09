@@ -302,9 +302,9 @@ def pagamentos():
   isAdmin()
   pag = c.getPagamentos()
   return render_template("admin_pagamentos.html", pagamentos = pag) 
-@app.route("/marcarpagamento/idpagamento/idestado")
-def marcarpagamento(pagamento, estado):
+@app.route("/trocar_estado/<idpagamento>/<idestado>")
+def trocar_estado(idpagamento, idestado):
   isAdmin()
-  c.setPagamentoEstado(pagamento, estado)
+  c.trocar_estado(idpagamento, idestado)
   return redirect(url_for('main_page'))
 run()

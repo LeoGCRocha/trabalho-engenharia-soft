@@ -125,7 +125,7 @@ class Conexao:
 		return carrinho 
 	def getPagamentos(self):
 		lista = []
-		sql = "SELECT * FROM PAGAMENTO"
+		sql = "SELECT * FROM PAGAMENTO order by id"
 		self.__cur.execute(sql)
 		rec = self.__cur.fetchall()
 		for r in rec:
@@ -159,7 +159,7 @@ class Conexao:
 			pagamento.setEstado(self.getEstadoPorId(r[3]))
 			lista.append(pagamento)
 		return lista
-	def marcarpagamento(pagamento, estado):
+	def trocar_estado(self, pagamento, estado):
 		sql = "UPDATE pagamento SET \"estado_id\" = %s WHERE id = %s"
 		self.__cur.execute(sql, (str(estado), str(pagamento)))
 		self.__con.commit()

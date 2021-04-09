@@ -23,10 +23,8 @@
             <td>R$ {{ pagamento.getCarrinho().getTotal() }}</td>
             <td class="text-center">
                 {% if pagamento.getEstado().getId() == 1 %}
-                <p class="btn btn-danger">
                 {% endif %}
                 {{ pagamento.getEstado().getDescricao() }}
-                </p>
             </td>
         </tr>
         {% endfor %} 
