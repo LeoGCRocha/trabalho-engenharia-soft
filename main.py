@@ -254,7 +254,11 @@ def ordernar_por_nome():
   return render_template('home.html', u = clienteAtual, produtos = prod, semEndereco = isDefinido)
 @app.route("/buscar",  methods=['POST'])
 def buscar():
-  return "TESTE"
+  home_page_metodo()
+  prod = c.getProdutosBusca(request.form['pesquisar'])
+  clienteAtual = c.get_cliente_por_id(session['login'])
+  isDefinido = clienteAtual.getEndereco() == None
+  return render_template('home.html', u = clienteAtual, produtos = prod, semEndereco = isDefinido)
 @app.route("/remover_carrinho/<id>")
 def remover_carrinho(id):
   notLogin()
