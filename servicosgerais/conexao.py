@@ -71,6 +71,15 @@ class Conexao:
 			p = Produto(r[0], r[1],r[2],r[3], r[4])
 			lista.append(p)
 		return lista
+	def getProdutosPreco(self):
+		lista = []
+		sql = "SELECT * FROM PRODUTO ORDER BY PRECO"
+		self.__cur.execute(sql)
+		rec = self.__cur.fetchall()
+		for r in rec:
+			p = Produto(r[0], r[1],r[2],r[3], r[4])
+			lista.append(p)
+		return lista
 	def cadastrar_produto(self, produto):
 		sql = "INSERT INTO PRODUTO(nome,descricao,preco,link_imagem)VALUES(%s,%s,%s,%s);"
 		self.__cur.execute(sql, (produto.getNome(), produto.getDescricao(),produto.getPreco(), produto.getLinkImagem()))

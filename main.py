@@ -232,6 +232,18 @@ def carrinho_de_compras():
     prod.setQuantidade(int(codAtual[1]))
     prodList.append(prod)
   return render_template("carrinho_de_compras.html", produtos = prodList, tot = total)
+@app.route('/ordenar_por_preco')
+def ordenar_por_preco():
+  if 'login' not in session:
+      return render_template('index.html')
+  else:
+    if session['login'] == "admin@admin":
+      return redirect(url_for("admin"))
+    else:
+      prod = c.getProdutosPreco()
+      clienteAtual = c.get_cliente_por_id(session['login'])
+      isDefinido = clienteAtual.getEndereco() == None
+      return render_template('home.html', u = clienteAtual, produtos = prod, semEndereco = isDefinido)
 @app.route("/remover_carrinho/<id>")
 def remover_carrinho(id):
   notLogin()
